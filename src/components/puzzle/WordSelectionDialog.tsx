@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gql } from "../../graphql/generated"
 import { useNotification } from "../common/NotificationContext"
 
@@ -46,15 +46,24 @@ interface WordSelectionDialogProps {
   open: boolean
   onClose: () => void
   onSelectWord: (wordId: string) => void
+  initialSearch: string
 }
 
-export function WordSelectionDialog({ open, onClose, onSelectWord }: WordSelectionDialogProps) {
+export function WordSelectionDialog({
+  open,
+  onClose,
+  onSelectWord,
+  initialSearch,
+}: WordSelectionDialogProps) {
   const [search, setSearch] = useState("")
   const [isCreating, setIsCreating] = useState(false)
   const [newWord, setNewWord] = useState("")
   const [descriptions, setDescriptions] = useState<string[]>([])
   const [newDescription, setNewDescription] = useState("")
   const { showNotification } = useNotification()
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const listRef = useRef<HTMLUListElement>(null)
 
   const { data } = useQuery(GET_WORDS)
   const [createWord] = useMutation(CREATE_WORD, {
@@ -149,6 +158,65 @@ export function WordSelectionDialog({ open, onClose, onSelectWord }: WordSelecti
 
   const noMatchingWords = search && (!filteredWords || filteredWords.length === 0)
 
+  useEffect(() => {
+    if (open && initialSearch) {
+      setSearch(initialSearch)
+      setTimeout(() => {
+        if (searchInputRef.current) {
+          searchInputRef.current.focus()
+          searchInputRef.current.setSelectionRange(initialSearch.length, initialSearch.length)
+        }
+      }, 0)
+    }
+  }, [open, initialSearch])
+
+  useEffect(() => {
+    if (!open) {
+      setSearch("")
+      setIsCreating(false)
+      setSelectedIndex(-1)
+    }
+  }, [open])
+
+  useEffect(() => {
+    setSelectedIndex(-1)
+  }, [filteredWords?.length])
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (isCreating) return
+
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault()
+        setSelectedIndex((prev) => (prev < (filteredWords?.length ?? 0) - 1 ? prev + 1 : prev))
+        break
+      case "ArrowUp":
+        event.preventDefault()
+        setSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev))
+        break
+      case "Enter":
+        event.preventDefault()
+        if (filteredWords?.length) {
+          onSelectWord(filteredWords[selectedIndex].id)
+        } else if (search.trim()) {
+          setNewWord(search)
+          setIsCreating(true)
+        }
+        break
+      case "Escape":
+        event.preventDefault()
+        handleClose()
+        break
+    }
+  }
+
+  useEffect(() => {
+    const selectedElement = listRef.current?.children[selectedIndex] as HTMLElement
+    if (selectedElement) {
+      selectedElement.scrollIntoView({ block: "nearest" })
+    }
+  }, [selectedIndex])
+
   return (
     <Dialog open={open} onClose={handleClose} maxWidth='sm' fullWidth>
       <DialogTitle>{isCreating ? "Create New Word" : "Select a Word"}</DialogTitle>
@@ -191,19 +259,41 @@ export function WordSelectionDialog({ open, onClose, onSelectWord }: WordSelecti
         ) : (
           <>
             <TextField
+              inputRef={searchInputRef}
               autoFocus
               margin='dense'
               label='Search words'
               fullWidth
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={handleKeyDown}
               sx={{ mb: 2 }}
             />
-            <List sx={{ maxHeight: 400, overflow: "auto" }}>
-              {filteredWords?.map((word) => (
-                <ListItem key={word.id} disablePadding>
-                  <ListItemButton onClick={() => onSelectWord(word.id)}>
-                    <ListItemText primary={word.word} secondary={word.descriptions.join(" • ")} />
+            <List ref={listRef} sx={{ maxHeight: 400, overflow: "auto" }}>
+              {filteredWords?.map((word, index) => (
+                <ListItem
+                  key={word.id}
+                  disablePadding
+                  onClick={() => onSelectWord(word.id)}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                  sx={{
+                    bgcolor: index === selectedIndex ? "action.selected" : undefined,
+                  }}
+                >
+                  <ListItemButton>
+                    <ListItemText
+                      primary={word.word}
+                      secondary={word.descriptions.join(" • ")}
+                      sx={
+                        index === selectedIndex
+                          ? {
+                              "& .MuiListItemText-primary": {
+                                fontWeight: "bold",
+                              },
+                            }
+                          : undefined
+                      }
+                    />
                   </ListItemButton>
                 </ListItem>
               ))}
@@ -212,6 +302,9 @@ export function WordSelectionDialog({ open, onClose, onSelectWord }: WordSelecti
               <Box sx={{ textAlign: "center", mt: 2 }}>
                 <Typography color='text.secondary' gutterBottom>
                   No matching words found
+                </Typography>
+                <Typography color='text.secondary' variant='caption' display='block' gutterBottom>
+                  Press Enter to create &quot;{search}&quot;
                 </Typography>
                 <Button
                   startIcon={<Add />}

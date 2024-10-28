@@ -105,4 +105,8 @@ export const resolvers: Resolvers = {
       )
     },
   },
+
+  Word: {
+    word: (word) => word.word.toUpperCase(),
+  },
 }
