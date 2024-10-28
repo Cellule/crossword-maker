@@ -128,7 +128,7 @@ export type PlacedWordResolvers<ContextType = GraphQLContext, ParentType extends
   isHorizontal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   startX?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   startY?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  word?: Resolver<GQLGen.Maybe<ResolversTypes['Word']>, ParentType, ContextType>;
+  word?: Resolver<ResolversTypes['Word'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

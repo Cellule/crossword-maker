@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import { HomePage } from "./components/home/HomePage"
 import { RootLayout } from "./components/layout/RootLayout"
+import { PuzzleEditor } from "./components/puzzle/PuzzleEditor"
 
 export const router = createBrowserRouter(
   [
@@ -12,7 +13,10 @@ export const router = createBrowserRouter(
           index: true,
           element: <HomePage />,
         },
-        // Add more routes here as needed
+        {
+          path: "puzzle/:puzzleId",
+          element: <PuzzleEditor />,
+        },
       ],
     },
   ],

@@ -62,7 +62,7 @@ A placed word in the puzzle grid
 """
 type PlacedWord {
   id: ID!
-  word: Word
+  word: Word!
   startX: Int!
   startY: Int!
   isHorizontal: Boolean!

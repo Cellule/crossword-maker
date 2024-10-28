@@ -1,6 +1,7 @@
 import { Reference, StoreObject, useMutation } from "@apollo/client"
 import { Delete, Edit } from "@mui/icons-material"
 import { Box, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
+import { Link, useNavigate } from "react-router-dom"
 import { useSafeFragment } from "../../graphql/fragmentHelpers"
 import { FragmentType, gql } from "../../graphql/generated"
 import { useNotification } from "../common/NotificationContext"
@@ -32,6 +33,7 @@ type CachedPuzzle = Reference | StoreObject | undefined
 export function PuzzleCard({ puzzle: _puzzle }: PuzzleCardProps) {
   const puzzle = useSafeFragment(PUZZLE_FRAGMENT, _puzzle)
   const { showNotification } = useNotification()
+  const navigate = useNavigate()
   const formattedDate = new Date(puzzle.createdAt).toLocaleDateString()
 
   const [deletePuzzle, { loading }] = useMutation(DELETE_PUZZLE, {
@@ -66,14 +68,14 @@ export function PuzzleCard({ puzzle: _puzzle }: PuzzleCardProps) {
     },
   })
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this puzzle?")) {
-      try {
-        await deletePuzzle()
-      } catch {
-        // Error is handled by onError callback
-      }
+      void deletePuzzle()
     }
+  }
+
+  const handleEdit = () => {
+    navigate(`/puzzle/${puzzle.id}`)
   }
 
   return (
@@ -91,15 +93,12 @@ export function PuzzleCard({ puzzle: _puzzle }: PuzzleCardProps) {
       </CardContent>
       <CardActions disableSpacing>
         <Box sx={{ ml: "auto" }}>
-          <IconButton aria-label='edit puzzle'>
-            <Edit />
-          </IconButton>
-          <IconButton
-            aria-label='delete puzzle'
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            onClick={handleDelete}
-            disabled={loading}
-          >
+          <Link to={`/puzzle/${puzzle.id}`}>
+            <IconButton aria-label='edit puzzle' onClick={handleEdit}>
+              <Edit />
+            </IconButton>
+          </Link>
+          <IconButton aria-label='delete puzzle' onClick={handleDelete} disabled={loading}>
             <Delete />
           </IconButton>
         </Box>

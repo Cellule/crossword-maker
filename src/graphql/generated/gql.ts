@@ -19,6 +19,9 @@ const documents = {
     "\n  query GetPuzzles {\n    puzzles(first: 5) {\n      edges {\n        id\n        ...PuzzleCard_puzzle @nonreactive\n      }\n      pageInfo {\n        hasNextPage\n      }\n    }\n  }\n": types.GetPuzzlesDocument,
     "\n  fragment PuzzleCard_puzzle on Puzzle {\n    id\n    name\n    size\n    createdAt\n    updatedAt\n  }\n": types.PuzzleCard_PuzzleFragmentDoc,
     "\n  mutation DeletePuzzle($id: ID!) {\n    deletePuzzle(id: $id)\n  }\n": types.DeletePuzzleDocument,
+    "\n  query GetPuzzle($id: ID!) {\n    puzzle(id: $id) {\n      id\n      name\n      ...PuzzleGrid_puzzle\n      ...WordList_puzzle\n    }\n  }\n": types.GetPuzzleDocument,
+    "\n  fragment PuzzleGrid_puzzle on Puzzle {\n    size\n    words {\n      startX\n      startY\n      isHorizontal\n      word {\n        word\n      }\n    }\n  }\n": types.PuzzleGrid_PuzzleFragmentDoc,
+    "\n  fragment WordList_puzzle on Puzzle {\n    id\n    words {\n      id\n      startX\n      startY\n      isHorizontal\n      word {\n        word\n      }\n    }\n  }\n": types.WordList_PuzzleFragmentDoc,
 };
 
 /**
@@ -55,6 +58,18 @@ export function gql(source: "\n  fragment PuzzleCard_puzzle on Puzzle {\n    id\
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation DeletePuzzle($id: ID!) {\n    deletePuzzle(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeletePuzzle($id: ID!) {\n    deletePuzzle(id: $id)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetPuzzle($id: ID!) {\n    puzzle(id: $id) {\n      id\n      name\n      ...PuzzleGrid_puzzle\n      ...WordList_puzzle\n    }\n  }\n"): (typeof documents)["\n  query GetPuzzle($id: ID!) {\n    puzzle(id: $id) {\n      id\n      name\n      ...PuzzleGrid_puzzle\n      ...WordList_puzzle\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment PuzzleGrid_puzzle on Puzzle {\n    size\n    words {\n      startX\n      startY\n      isHorizontal\n      word {\n        word\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment PuzzleGrid_puzzle on Puzzle {\n    size\n    words {\n      startX\n      startY\n      isHorizontal\n      word {\n        word\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment WordList_puzzle on Puzzle {\n    id\n    words {\n      id\n      startX\n      startY\n      isHorizontal\n      word {\n        word\n      }\n    }\n  }\n"): (typeof documents)["\n  fragment WordList_puzzle on Puzzle {\n    id\n    words {\n      id\n      startX\n      startY\n      isHorizontal\n      word {\n        word\n      }\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
