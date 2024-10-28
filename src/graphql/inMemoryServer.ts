@@ -1,8 +1,8 @@
 import { SchemaLink } from "@apollo/client/link/schema"
 import { makeExecutableSchema } from "@graphql-tools/schema"
+import { LocalStorageDataSource } from "./LocalStorageDataSource"
 import { resolvers } from "./resolvers"
 import typeDefs from "./schema.graphql?raw"
-import { LocalStorageDataSource } from "./types"
 
 const schema = makeExecutableSchema({
   typeDefs,
