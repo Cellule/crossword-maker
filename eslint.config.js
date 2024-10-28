@@ -6,7 +6,7 @@ import globals from "globals"
 import tseslint from "typescript-eslint"
 
 export default tseslint.config(
-  { ignores: ["dist", ".yarn", "node_modules"] },
+  { ignores: ["dist", "src/graphql/generated", ".yarn", "node_modules"] },
   {
     extends: [
       js.configs.recommended,
@@ -40,6 +40,7 @@ export default tseslint.config(
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/array-type": ["error", { default: "array-simple" }],
+      "@typescript-eslint/no-explicit-any": "off",
       "react/prop-types": "off", // Since we're using TypeScript
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",

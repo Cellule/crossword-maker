@@ -1,0 +1,123 @@
+type Query {
+  """
+  Get all available words
+  """
+  words: [Word!]!
+
+  """
+  Get a specific word by ID
+  """
+  word(id: ID!): Word
+
+  """
+  Get all puzzles
+  """
+  puzzles(first: Int!, after: String): PuzzleConnection!
+
+  """
+  Get a specific puzzle by ID
+  """
+  puzzle(id: ID!): Puzzle
+}
+
+type Mutation {
+  """
+  Add a new word to the database
+  """
+  createWord(input: CreateWordInput!): Word!
+
+  """
+  Create a new empty puzzle
+  """
+  createPuzzle(input: CreatePuzzleInput!): Puzzle!
+
+  """
+  Place a word in the puzzle
+  """
+  placeWord(puzzleId: ID!, input: PlaceWordInput!): PlacedWord!
+
+  """
+  Remove a word from the puzzle
+  """
+  removeWord(puzzleId: ID!, placedWordId: ID!): Boolean!
+
+  """
+  Delete a puzzle
+  """
+  deletePuzzle(id: ID!): Boolean!
+}
+
+"""
+A word that can be used in the crossword puzzle
+"""
+type Word {
+  id: ID!
+  word: String!
+  descriptions: [String!]!
+  length: Int!
+}
+
+"""
+A placed word in the puzzle grid
+"""
+type PlacedWord {
+  id: ID!
+  word: Word
+  startX: Int!
+  startY: Int!
+  isHorizontal: Boolean!
+}
+
+"""
+The crossword puzzle grid
+"""
+type Puzzle {
+  id: ID!
+  name: String!
+  size: Int!
+  words: [PlacedWord!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""
+A connection to a list of puzzles
+"""
+type PuzzleConnection {
+  edges: [Puzzle!]!
+  pageInfo: PageInfo!
+}
+
+"""
+Input for creating a new word
+"""
+input CreateWordInput {
+  word: String!
+  descriptions: [String!]!
+}
+
+"""
+Input for placing a word in the puzzle
+"""
+input PlaceWordInput {
+  wordId: ID!
+  startX: Int!
+  startY: Int!
+  isHorizontal: Boolean!
+}
+
+"""
+Input for creating a new puzzle
+"""
+input CreatePuzzleInput {
+  name: String!
+  size: Int!
+}
+
+"""
+Information about pagination
+"""
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String!
+}
