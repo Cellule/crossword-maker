@@ -2333,7 +2333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.3.11":
+"@types/react@npm:*, @types/react@npm:^18.3.12":
   version: 18.3.12
   resolution: "@types/react@npm:18.3.12"
   dependencies:
@@ -3297,22 +3297,22 @@ __metadata:
     "@graphql-codegen/typescript-react-apollo": "npm:^4.3.2"
     "@mui/icons-material": "npm:^6.1.5"
     "@mui/material": "npm:^6.1.5"
-    "@types/react": "npm:^18.3.11"
+    "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"
     "@vitejs/plugin-react": "npm:^4.3.3"
     eslint: "npm:^9.13.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-react: "npm:^7.37.2"
     eslint-plugin-react-hooks: "npm:^5.0.0"
-    eslint-plugin-react-refresh: "npm:^0.4.13"
+    eslint-plugin-react-refresh: "npm:^0.4.14"
     globals: "npm:^15.11.0"
     graphql: "npm:^16.9.0"
     prettier: "npm:^3.3.3"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    typescript: "npm:~5.6.2"
-    typescript-eslint: "npm:^8.10.0"
-    vite: "npm:^5.4.9"
+    typescript: "npm:~5.6.3"
+    typescript-eslint: "npm:^8.11.0"
+    vite: "npm:^5.4.10"
   languageName: unknown
   linkType: soft
 
@@ -3806,7 +3806,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-refresh@npm:^0.4.13":
+"eslint-plugin-react-refresh@npm:^0.4.14":
   version: 0.4.14
   resolution: "eslint-plugin-react-refresh@npm:0.4.14"
   peerDependencies:
@@ -7030,7 +7030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.10.0":
+"typescript-eslint@npm:^8.11.0":
   version: 8.11.0
   resolution: "typescript-eslint@npm:8.11.0"
   dependencies:
@@ -7044,7 +7044,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:~5.6.2":
+"typescript@npm:~5.6.3":
   version: 5.6.3
   resolution: "typescript@npm:5.6.3"
   bin:
@@ -7054,7 +7054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A~5.6.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A~5.6.3#optional!builtin<compat/typescript>":
   version: 5.6.3
   resolution: "typescript@patch:typescript@npm%3A5.6.3#optional!builtin<compat/typescript>::version=5.6.3&hash=8c6c40"
   bin:
@@ -7188,7 +7188,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.4.9":
+"vite@npm:^5.4.10":
   version: 5.4.10
   resolution: "vite@npm:5.4.10"
   dependencies:

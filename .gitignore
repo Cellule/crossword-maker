@@ -27,3 +27,5 @@ dist-ssr
 # Ignore yarn files
 .yarn/*
 !.yarn/releases
+
+.env

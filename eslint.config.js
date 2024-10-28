@@ -39,6 +39,7 @@ export default tseslint.config(
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/array-type": ["error", { default: "array-simple" }],
       "react/prop-types": "off", // Since we're using TypeScript
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
