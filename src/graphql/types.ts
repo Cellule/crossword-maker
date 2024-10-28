@@ -141,4 +141,11 @@ export class LocalStorageDataSource {
   private decodeCursor(cursor: string) {
     return atob(cursor)
   }
+
+  deletePuzzle(id: string): boolean {
+    const initialLength = this.data.puzzles.length
+    this.data.puzzles = this.data.puzzles.filter((p) => p.id !== id)
+    this.saveData()
+    return this.data.puzzles.length < initialLength
+  }
 }

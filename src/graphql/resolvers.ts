@@ -32,6 +32,14 @@ export const resolvers: Resolvers = {
       return dataSources.storage.createPuzzle(input)
     },
 
+    deletePuzzle: (_parent, { id }, { dataSources }) => {
+      const puzzle = dataSources.storage.getPuzzle(id)
+      if (!puzzle) {
+        throw new GraphQLError("Puzzle not found")
+      }
+      return dataSources.storage.deletePuzzle(id)
+    },
+
     // ... other mutations
   },
 

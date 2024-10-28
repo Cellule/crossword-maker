@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client"
 import { Delete, Edit } from "@mui/icons-material"
 import { Box, Card, CardActions, CardContent, IconButton, Typography } from "@mui/material"
 import { useSafeFragment } from "../../graphql/fragmentHelpers"
@@ -13,6 +14,12 @@ const PUZZLE_FRAGMENT = gql(`
   }
 `)
 
+const DELETE_PUZZLE = gql(`
+  mutation DeletePuzzle($id: ID!) {
+    deletePuzzle(id: $id)
+  }
+`)
+
 interface PuzzleCardProps {
   puzzle: FragmentType<typeof PUZZLE_FRAGMENT>
 }
@@ -20,6 +27,32 @@ interface PuzzleCardProps {
 export function PuzzleCard({ puzzle: _puzzle }: PuzzleCardProps) {
   const puzzle = useSafeFragment(PUZZLE_FRAGMENT, _puzzle)
   const formattedDate = new Date(puzzle.createdAt).toLocaleDateString()
+
+  const [deletePuzzle, { loading }] = useMutation(DELETE_PUZZLE, {
+    variables: { id: puzzle.id },
+    update(cache) {
+      cache.modify({
+        fields: {
+          puzzles(existing = { edges: [] }, { readField }) {
+            return {
+              ...existing,
+              edges: existing.edges.filter((p: any) => readField("id", p) !== puzzle.id),
+            }
+          },
+        },
+      })
+    },
+  })
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this puzzle?")) {
+      try {
+        await deletePuzzle()
+      } catch (error) {
+        console.error("Failed to delete puzzle:", error)
+      }
+    }
+  }
 
   return (
     <Card sx={{ width: "100%" }}>
@@ -39,7 +72,12 @@ export function PuzzleCard({ puzzle: _puzzle }: PuzzleCardProps) {
           <IconButton aria-label='edit puzzle'>
             <Edit />
           </IconButton>
-          <IconButton aria-label='delete puzzle'>
+          <IconButton
+            aria-label='delete puzzle'
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onClick={handleDelete}
+            disabled={loading}
+          >
             <Delete />
           </IconButton>
         </Box>

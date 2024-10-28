@@ -18,6 +18,7 @@ const documents = {
     "\n                fragment NewPuzzle on Puzzle {\n                  id\n                  ...PuzzleCard_puzzle\n                }\n              ": types.NewPuzzleFragmentDoc,
     "\n  query GetPuzzles {\n    puzzles(first: 5) {\n      edges {\n        id\n        ...PuzzleCard_puzzle @nonreactive\n      }\n      pageInfo {\n        hasNextPage\n      }\n    }\n  }\n": types.GetPuzzlesDocument,
     "\n  fragment PuzzleCard_puzzle on Puzzle {\n    id\n    name\n    size\n    createdAt\n    updatedAt\n  }\n": types.PuzzleCard_PuzzleFragmentDoc,
+    "\n  mutation DeletePuzzle($id: ID!) {\n    deletePuzzle(id: $id)\n  }\n": types.DeletePuzzleDocument,
 };
 
 /**
@@ -50,6 +51,10 @@ export function gql(source: "\n  query GetPuzzles {\n    puzzles(first: 5) {\n  
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  fragment PuzzleCard_puzzle on Puzzle {\n    id\n    name\n    size\n    createdAt\n    updatedAt\n  }\n"): (typeof documents)["\n  fragment PuzzleCard_puzzle on Puzzle {\n    id\n    name\n    size\n    createdAt\n    updatedAt\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation DeletePuzzle($id: ID!) {\n    deletePuzzle(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeletePuzzle($id: ID!) {\n    deletePuzzle(id: $id)\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
