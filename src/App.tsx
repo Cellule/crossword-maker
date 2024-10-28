@@ -1,13 +1,11 @@
+import { RouterProvider } from "react-router-dom"
 import { NotificationProvider } from "./components/common/NotificationContext"
-import { HomePage } from "./components/home/HomePage"
-import { AppLayout } from "./components/layout/AppLayout"
+import { router } from "./router"
 
 function App() {
   return (
     <NotificationProvider>
-      <AppLayout>
-        <HomePage />
-      </AppLayout>
+      <RouterProvider router={router} />
     </NotificationProvider>
   )
 }

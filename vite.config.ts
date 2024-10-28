@@ -24,6 +24,9 @@ const defaultKeyFilePath = path.join(os.homedir(), ".certs", "localhost-key.pem"
 const certFile = getFile(process.env.LOCALHOST_CERTFILE, defaultCertFilePath)
 const keyFile = getFile(process.env.LOCALHOST_KEYFILE, defaultKeyFilePath)
 
+// Get the repository name from package.json or environment
+const base = process.env.NODE_ENV === "production" ? "/crossword-maker/" : "/"
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
@@ -41,11 +44,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          react: ["react", "react-dom"],
+          react: ["react", "react-dom", "react-router", "react-router-dom"],
           apollo: ["@apollo/client", "graphql", "@graphql-tools/schema"],
           mui: ["@mui/material", "@mui/icons-material"],
         },
       },
     },
   },
+  base,
 })
