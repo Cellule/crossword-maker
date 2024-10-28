@@ -37,4 +37,15 @@ export default defineConfig({
             key: keyFile,
           },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom"],
+          apollo: ["@apollo/client", "graphql", "@graphql-tools/schema"],
+          mui: ["@mui/material", "@mui/icons-material"],
+        },
+      },
+    },
+  },
 })
